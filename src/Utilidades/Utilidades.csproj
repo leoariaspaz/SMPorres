@@ -160,6 +160,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="App.Debug.config" />
     <None Include="App.Release.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

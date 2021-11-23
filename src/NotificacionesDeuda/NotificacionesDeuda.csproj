@@ -164,6 +164,7 @@
     <Compile Include="Repositories\TasasMoraRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Debug.config" />
     <None Include="App.config" />
     <EntityDeploy Include="Models\SMPorres.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
