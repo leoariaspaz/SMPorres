@@ -1,6 +1,6 @@
 # SMPorres — Tuition Collections System
 
-A tuition and fee collections system built for a technical-career institute in Argentina. It replaces a legacy Access database and a manual reconciliation process with a desktop back-office application, a student web portal, an enrollment REST API and two scheduled utilities, all working over the same business rules. It was designed and built end to end between 2019 and 2020 for a real client.
+A tuition and fee collections system built for a technical-career institute in Argentina. It replaces a legacy Access database and a manual reconciliation process with a desktop back-office application, a student web portal, an enrollment REST API and two scheduled utilities, all working over the same business rules. It was designed and built by two developers between 2019 and 2020 for a real client.
 
 ## The problem it solves
 
@@ -87,7 +87,7 @@ The student web portal has its own database, which is not part of this diagram. 
 
 **Separate databases for the back office and the public portal.** The student portal has its own database with only the data students need, pushed from the desktop application and the API through a SOAP web service. This keeps the internal collections database off the public-facing site.
 
-**Late fees computed in tranches by rate validity period.** Instead of a single interest rate, the rates live in a table with start and end dates, and the fee for a given payment date is the sum of each tranche's days times the rate in force. The same rules are reused by the desktop app, the web portal and the debt notifications.
+**Late fees computed in tranches by rate validity period.** Instead of a single interest rate, the rates live in a table with start and end dates, and the fee for a given payment date is the sum of each tranche's days times the rate in force. The desktop application and the web portal each apply these rules, and the rates table is synchronized to the portal database so both produce the same result.
 
 **A bank-compatible barcode and automatic reconciliation.** The payment slip barcode encodes enough information (payment id, Julian due date, amount, check digit) for the system to match each line of the bank's settlement file to the exact installment, without manual lookup.
 
