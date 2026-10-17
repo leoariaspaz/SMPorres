@@ -1,0 +1,328 @@
+# SMPorres - Entity-Relationship diagram (back-office database)
+# Generated from doc/db/diagram.db. Render with: d2 smporres-er.d2 smporres-er.svg
+# Online: paste into https://play.d2lang.com
+
+vars: {
+  d2-config: {
+    layout-engine: elk
+    theme-id: 0
+    pad: 40
+  }
+}
+
+direction: right
+
+classes: {
+  fk: {
+    style.stroke: "#6B7280"
+    style.stroke-width: 1
+    source-arrowhead: { shape: cf-many }
+    target-arrowhead: { shape: cf-one }
+  }
+}
+
+academic: "Academic" {
+  style: {
+    fill: "#E8F1FB"
+    stroke: "#3B7DD8"
+    stroke-width: 2
+    border-radius: 10
+    font-size: 28
+    bold: true
+  }
+
+  Carreras: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Nombre": "varchar(255)"
+    "Duracion": "smallint"
+    "Estado": "smallint"
+    "FechaEstado": "smalldatetime"
+  }
+  Cursos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Nombre": "varchar(50)"
+    "IdCarrera": "int" { constraint: [foreign_key] }
+    "ImporteCuota": "numeric(18,2)"
+    "ImporteMatricula": "numeric(18,2)"
+    "Modalidad": "int"
+    "DescuentoMatricula": "numeric(18,2)"
+    "FechaVencDescuento": "datetime"
+    "Cuota1": "numeric(18,2)"
+    "Cuota2": "numeric(18,2)"
+    "Cuota3": "numeric(18,2)"
+    "Estado": "smallint"
+  }
+  TiposDocumento: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Descripcion": "varchar(50)"
+  }
+  Alumnos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Nombre": "varchar(255)"
+    "Apellido": "varchar(255)"
+    "IdTipoDocumento": "int" { constraint: [foreign_key] }
+    "NroDocumento": "numeric(18,0)"
+    "FechaNacimiento": "smalldatetime"
+    "EMail": "varchar(255)"
+    "Direccion": "varchar(255)"
+    "IdDomicilio": "int" { constraint: [foreign_key] }
+    "Estado": "tinyint"
+    "Sexo": "char(1)"
+    "Contraseña": "varchar(255)"
+  }
+  CursosAlumnos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdCurso": "int" { constraint: [foreign_key] }
+    "IdAlumno": "int" { constraint: [foreign_key] }
+    "CicloLectivo": "smallint"
+  }
+  BecasAlumnos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdAlumno": "int" { constraint: [foreign_key] }
+    "PorcentajeBeca": "smallint"
+  }
+  PlanesPago: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdAlumno": "int" { constraint: [foreign_key] }
+    "IdCurso": "int" { constraint: [foreign_key] }
+    "NroCuota": "smallint"
+    "CantidadCuotas": "smallint"
+    "ImporteCuota": "numeric(18,2)"
+    "PorcentajeBeca": "smallint"
+    "IdUsuario": "int" { constraint: [foreign_key] }
+    "FechaGrabacion": "datetime"
+    "Estado": "smallint"
+    "IdUsuarioEstado": "int" { constraint: [foreign_key] }
+    "TipoBeca": "tinyint"
+    "Modalidad": "int"
+  }
+}
+
+payments: "Payments" {
+  style: {
+    fill: "#E9F7EF"
+    stroke: "#2E9E5B"
+    stroke-width: 2
+    border-radius: 10
+    font-size: 28
+    bold: true
+  }
+
+  MediosPago: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Descripcion": "varchar(50)" { constraint: [unique] }
+  }
+  Cuotas: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Cuota": "smallint"
+    "VtoCuota": "smalldatetime"
+    "CicloLectivo": "smallint"
+  }
+  Configuracion: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "DescuentoPagoTermino": "float"
+    "InteresPorMora": "float"
+    "CicloLectivo": "smallint"
+    "EndpointAddress": "varchar(255)"
+    "DiasVtoPagoTermino": "smallint"
+  }
+  TasasMora: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Tasa": "float"
+    "Desde": "smalldatetime"
+    "Hasta": "smalldatetime"
+    "Estado": "smallint"
+  }
+  Pagos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdPlanPago": "int" { constraint: [foreign_key] }
+    "Fecha": "smalldatetime"
+    "NroCuota": "smallint"
+    "ImportePagado": "numeric(18,2)"
+    "ImporteCuota": "numeric(18,2)"
+    "PorcDescPagoTermino": "float"
+    "ImportePagoTermino": "numeric(18,2)"
+    "PorcBeca": "float"
+    "IdBecaAlumno": "int" { constraint: [foreign_key] }
+    "ImporteRecargo": "numeric(18,2)"
+    "IdMedioPago": "int" { constraint: [foreign_key] }
+    "IdArchivo": "int"
+    "EsContrasiento": "smallint"
+    "IdPagoAsiento": "int" { constraint: [foreign_key] }
+    "IdUsuario": "int" { constraint: [foreign_key] }
+    "FechaGrabacion": "datetime"
+    "PorcRecargo": "float"
+    "ImporteBeca": "numeric(18,2)"
+    "FechaVto": "datetime"
+    "Descripcion": "varchar(255)"
+    "Estado": "smallint"
+  }
+  CabecerasArchivos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdTipoArchivo": "int"
+    "NombreArchivo": "varchar(50)"
+    "Hash": "varchar(50)"
+    "Fecha": "smalldatetime"
+    "IdUsuario": "int" { constraint: [foreign_key] }
+  }
+  RendicionesBSE: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdCabeceraArchivo": "int" { constraint: [foreign_key] }
+    "CodigoSucursal": "int"
+    "NombreSucursal": "varchar(50)"
+    "Moneda": "varchar(50)"
+    "Comprobante": "varchar(50)"
+    "TipoMovimiento": "varchar(50)"
+    "Importe": "varchar(50)"
+    "FechaProceso": "varchar(50)"
+    "CuilUsuario": "varchar(50)"
+    "NombreUsuario": "varchar(50)"
+    "Hora": "varchar(50)"
+    "CodigoBarra": "varchar(50)"
+    "GrupoTerminal": "varchar(50)"
+    "NroRendicion": "varchar(50)"
+    "FechaMovimiento": "varchar(50)"
+  }
+}
+
+geography: "Geography" {
+  style: {
+    fill: "#FFF4E0"
+    stroke: "#D98E04"
+    stroke-width: 2
+    border-radius: 10
+    font-size: 28
+    bold: true
+  }
+
+  Provincias: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Nombre": "varchar(50)"
+  }
+  Departamentos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdProvincia": "int" { constraint: [foreign_key] }
+    "Nombre": "varchar(50)"
+  }
+  Localidades: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdDepartamento": "int" { constraint: [foreign_key] }
+    "Nombre": "varchar(50)"
+  }
+  Barrios: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdLocalidad": "int" { constraint: [foreign_key] }
+    "Nombre": "varchar(50)"
+  }
+  Domicilios: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdBarrio": "int" { constraint: [foreign_key] }
+    "IdLocalidad": "int" { constraint: [foreign_key] }
+    "IdDepartamento": "int" { constraint: [foreign_key] }
+    "IdProvincia": "int" { constraint: [foreign_key] }
+  }
+}
+
+security: "Security" {
+  style: {
+    fill: "#F3E8FB"
+    stroke: "#8A4FC7"
+    stroke-width: 2
+    border-radius: 10
+    font-size: 28
+    bold: true
+  }
+
+  Usuarios: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Nombre": "varchar(50)"
+    "Contraseña": "varchar(255)"
+    "FechaAlta": "datetime"
+    "Estado": "tinyint"
+    "FechaBaja": "datetime"
+    "NombreCompleto": "varchar(50)"
+  }
+  Grupos: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "Descripcion": "varchar(30)"
+    "Estado": "tinyint"
+  }
+  ItemsMenu: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdPadre": "int"
+    "Nombre": "varchar(50)"
+    "Descripcion": "varchar(50)"
+  }
+  GruposUsuarios: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdGrupo": "int" { constraint: [foreign_key] }
+    "IdUsuario": "int" { constraint: [foreign_key] }
+  }
+  GruposItemsMenu: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdGrupo": "int" { constraint: [foreign_key] }
+    "IdItemMenu": "int" { constraint: [foreign_key] }
+  }
+  UsuariosItemsMenu: {
+    shape: sql_table
+    "Id": "int" { constraint: [primary_key] }
+    "IdUsuario": "int" { constraint: [foreign_key] }
+    "IdItemMenu": "int" { constraint: [foreign_key] }
+  }
+}
+
+# Relationships: child (many) -> parent (one)
+academic.Cursos."IdCarrera" -> academic.Carreras."Id": { class: fk }
+academic.Alumnos."IdTipoDocumento" -> academic.TiposDocumento."Id": { class: fk }
+academic.Alumnos."IdDomicilio" -> geography.Domicilios."Id": { class: fk }
+academic.CursosAlumnos."IdAlumno" -> academic.Alumnos."Id": { class: fk }
+academic.CursosAlumnos."IdCurso" -> academic.Cursos."Id": { class: fk }
+academic.BecasAlumnos."IdAlumno" -> academic.Alumnos."Id": { class: fk }
+academic.PlanesPago."IdAlumno" -> academic.Alumnos."Id": { class: fk }
+academic.PlanesPago."IdCurso" -> academic.Cursos."Id": { class: fk }
+academic.PlanesPago."IdUsuario" -> security.Usuarios."Id": { class: fk }
+academic.PlanesPago."IdUsuarioEstado" -> security.Usuarios."Id": { class: fk }
+payments.Pagos."IdPlanPago" -> academic.PlanesPago."Id": { class: fk }
+payments.Pagos."IdBecaAlumno" -> academic.BecasAlumnos."Id": { class: fk }
+payments.Pagos."IdMedioPago" -> payments.MediosPago."Id": { class: fk }
+payments.Pagos."IdPagoAsiento" -> payments.Pagos."Id": { class: fk }
+payments.Pagos."IdUsuario" -> security.Usuarios."Id": { class: fk }
+payments.CabecerasArchivos."IdUsuario" -> security.Usuarios."Id": { class: fk }
+payments.RendicionesBSE."IdCabeceraArchivo" -> payments.CabecerasArchivos."Id": { class: fk }
+geography.Departamentos."IdProvincia" -> geography.Provincias."Id": { class: fk }
+geography.Localidades."IdDepartamento" -> geography.Departamentos."Id": { class: fk }
+geography.Barrios."IdLocalidad" -> geography.Localidades."Id": { class: fk }
+geography.Domicilios."IdBarrio" -> geography.Barrios."Id": { class: fk }
+geography.Domicilios."IdLocalidad" -> geography.Localidades."Id": { class: fk }
+geography.Domicilios."IdDepartamento" -> geography.Departamentos."Id": { class: fk }
+geography.Domicilios."IdProvincia" -> geography.Provincias."Id": { class: fk }
+security.GruposUsuarios."IdGrupo" -> security.Grupos."Id": { class: fk }
+security.GruposUsuarios."IdUsuario" -> security.Usuarios."Id": { class: fk }
+security.GruposItemsMenu."IdGrupo" -> security.Grupos."Id": { class: fk }
+security.GruposItemsMenu."IdItemMenu" -> security.ItemsMenu."Id": { class: fk }
+security.UsuariosItemsMenu."IdUsuario" -> security.Usuarios."Id": { class: fk }
+security.UsuariosItemsMenu."IdItemMenu" -> security.ItemsMenu."Id": { class: fk }
